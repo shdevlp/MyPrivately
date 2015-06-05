@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search"
+        app:showAsAction="always"
+        android:icon="@mipmap/ab_main_icon_search"
+        android:title="action_search">
+    </item>
+    <item
+        android:id="@+id/action_add_contact"
+        app:showAsAction="always"
+        android:icon="@mipmap/ic_action_social_person_add"
+        android:title="action_add_contact">
+    </item>
+</menu>

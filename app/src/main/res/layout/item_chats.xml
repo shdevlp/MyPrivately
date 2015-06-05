@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="64dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@mipmap/cc_no_avatar_big" >
+    </ImageView>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="left">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/user_name"
+            android:textSize="14dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/user_status"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/user_status"
+            android:textSize="10dp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/user_last_message"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+id/user_status"
+            android:textSize="10dp" >
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user_unread_message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:background="@mipmap/cc_icon_new_massage"
+            android:textColor="@color/white"
+            android:text="@+id/user_unread_message_count"
+            android:textSize="14dp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/user_last_time"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="right|bottom"
+            android:text="@+id/user_last_time"
+            android:textSize="12dp" >
+        </TextView>
+    </LinearLayout>
+</LinearLayout>
