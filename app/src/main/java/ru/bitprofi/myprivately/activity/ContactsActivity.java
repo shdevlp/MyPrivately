@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.software.shell.fab.ActionButton;
+
 import java.util.ArrayList;
 
 import ru.bitprofi.myprivately.R;
@@ -23,6 +25,8 @@ import ru.bitprofi.myprivately.adapter.ContactsAdapter;
  */
 public class ContactsActivity extends ActionBarActivity {
     private ListView _lvContacts = null;
+    // And then find it within the content view:
+    private ActionButton _abEditChat = null;
 
     private void showActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -36,7 +40,7 @@ public class ContactsActivity extends ActionBarActivity {
             actionBar.setCustomView(v);
 
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.mipmap.ab_main_icon_back);
+            actionBar.setHomeAsUpIndicator(R.drawable.ab_main_icon_back);
 
             actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.mainblue)));
         }
@@ -50,15 +54,16 @@ public class ContactsActivity extends ActionBarActivity {
 
             showActionBar();
 
+            _abEditChat = (ActionButton) findViewById(R.id.abEditChat);
             _lvContacts = (ListView) findViewById(R.id.lvContacts);
 
             ArrayList<User> users = new ArrayList<User>();
-            users.add(new User(this, "101", R.mipmap.cc_no_avatar_big));
-            users.add(new User(this, "102", R.mipmap.cc_no_avatar_big));
-            users.add(new User(this, "103", R.mipmap.cc_no_avatar_big));
-            users.add(new User(this, "104", R.mipmap.cc_no_avatar_big));
-            users.add(new User(this, "105", R.mipmap.cc_no_avatar_big));
-            users.add(new User(this, "106", R.mipmap.cc_no_avatar_big));
+            users.add(new User(this, "101", R.drawable.cc_no_avatar_big));
+            users.add(new User(this, "102", R.drawable.cc_no_avatar_big));
+            users.add(new User(this, "103", R.drawable.cc_no_avatar_big));
+            users.add(new User(this, "104", R.drawable.cc_no_avatar_big));
+            users.add(new User(this, "105", R.drawable.cc_no_avatar_big));
+            users.add(new User(this, "106", R.drawable.cc_no_avatar_big));
 
             ContactsAdapter uAdapter = new ContactsAdapter(this, users);
             _lvContacts.setAdapter(uAdapter);

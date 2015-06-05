@@ -34,7 +34,7 @@ public class ChatsActivity extends ActionBarActivity {
             actionBar.setCustomView(v);
 
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.mipmap.ic_action_navigation_menu);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_navigation_menu);
 
             actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.mainblue)));
         }
@@ -54,12 +54,12 @@ public class ChatsActivity extends ActionBarActivity {
         _lvChats = (ListView) findViewById(R.id.lvChats);
 
         ArrayList<User> users = new ArrayList<User>();
-        users.add(new User(this, "101", R.mipmap.cc_no_avatar_big));
-        users.add(new User(this, "102", R.mipmap.cc_no_avatar_big));
-        users.add(new User(this, "103", R.mipmap.cc_no_avatar_big));
-        users.add(new User(this, "104", R.mipmap.cc_no_avatar_big));
-        users.add(new User(this, "105", R.mipmap.cc_no_avatar_big));
-        users.add(new User(this, "106", R.mipmap.cc_no_avatar_big));
+        users.add(new User(this, "101", R.drawable.cc_no_avatar_big));
+        users.add(new User(this, "102", R.drawable.cc_no_avatar_big));
+        users.add(new User(this, "103", R.drawable.cc_no_avatar_big));
+        users.add(new User(this, "104", R.drawable.cc_no_avatar_big));
+        users.add(new User(this, "105", R.drawable.cc_no_avatar_big));
+        users.add(new User(this, "106", R.drawable.cc_no_avatar_big));
 
         ChatsAdapter uAdapter = new ChatsAdapter(this, users);
         _lvChats.setAdapter(uAdapter);

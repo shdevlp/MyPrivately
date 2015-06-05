@@ -12,7 +12,7 @@
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="НеPrivately"
-        android:textColor="#fff"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         android:textStyle="bold" />
-
 </RelativeLayout>
