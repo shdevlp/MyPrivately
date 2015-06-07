@@ -1,7 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ru.bitprofi.myprivately.ChatsActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_option"
+        app:showAsAction="always"
+        android:icon="@drawable/ab_main_icon_overflow"
+        android:title="action_add_chat">
+    </item>
 </menu>

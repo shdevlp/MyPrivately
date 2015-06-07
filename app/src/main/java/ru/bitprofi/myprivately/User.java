@@ -2,12 +2,15 @@ package ru.bitprofi.myprivately;
 
 import android.content.Context;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by Дмитрий on 15.05.2015.
  */
-public class User {
+
+@SuppressWarnings("serial") //with this annotation we are going to hide compiler warning
+public class User implements Serializable {
     private Context _context;
 
     private String     _name;

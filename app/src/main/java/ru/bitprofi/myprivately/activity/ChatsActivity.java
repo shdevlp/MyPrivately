@@ -66,6 +66,10 @@ public class ChatsActivity extends ActionBarActivity {
         _lvChats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent myIntent = new Intent(getBaseContext(), ChatActivity.class);
+                User usr = (User)parent.getItemAtPosition(position);
+                myIntent.putExtra("User", usr);
+                startActivity(myIntent);
             }
 
         });

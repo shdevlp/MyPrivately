@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="64dp"
-    android:background="@color/red"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/user_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/yellow"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -19,7 +17,6 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/blueviolet"
         android:orientation="vertical"
         android:layout_marginLeft="16dp"
         android:layout_gravity="left">
@@ -30,7 +27,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:layout_marginTop="2dp"
-            android:background="@color/brown"
             android:text="@+id/user_name"
             android:textColor="#2b3033"
             android:textSize="16sp">
@@ -42,7 +38,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:text="@+id/user_status"
-            android:background="@color/bisque"
             android:textColor="#979797"
             android:textSize="12sp" >
         </TextView>
@@ -54,7 +49,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:text="@+id/user_status"
-            android:background="@color/azure"
             android:textColor="#979797"
             android:textSize="12sp" >
         </TextView>
@@ -63,7 +57,6 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/violet"
         android:gravity="right"
         android:orientation="vertical">
 
@@ -84,7 +77,6 @@
             android:id="@+id/user_last_time"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/burlywood"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
