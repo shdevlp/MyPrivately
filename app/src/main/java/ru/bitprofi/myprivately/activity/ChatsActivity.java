@@ -54,21 +54,21 @@ public class ChatsActivity extends ActionBarActivity {
         _lvChats = (ListView) findViewById(R.id.lvChats);
 
         ArrayList<User> users = new ArrayList<User>();
-        users.add(new User(this, "101", R.drawable.cc_no_avatar_big));
-        users.add(new User(this, "102", R.drawable.cc_no_avatar_big));
-        users.add(new User(this, "103", R.drawable.cc_no_avatar_big));
-        users.add(new User(this, "104", R.drawable.cc_no_avatar_big));
-        users.add(new User(this, "105", R.drawable.cc_no_avatar_big));
-        users.add(new User(this, "106", R.drawable.cc_no_avatar_big));
+        for (int i = 0; i < 100; i++) {
+            users.add(new User(this, "+7901100000"+String.valueOf(i+1), R.drawable.cc_no_avatar_big));
+        }
 
         ChatsAdapter uAdapter = new ChatsAdapter(this, users);
         _lvChats.setAdapter(uAdapter);
         _lvChats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myIntent = new Intent(getBaseContext(), ChatActivity.class);
                 User usr = (User)parent.getItemAtPosition(position);
-                myIntent.putExtra("User", usr);
+
+                Intent myIntent = new Intent(getBaseContext(), ChatActivity.class);
+                myIntent.putExtra("UserName", usr.getName());
+                myIntent.putExtra("UserStatus", usr.getStatusString());
+                myIntent.putExtra("UserImage", usr.getImage());
                 startActivity(myIntent);
             }
 

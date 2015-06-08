@@ -5,57 +5,64 @@
     tools:context=".activity.ChatActivity"
     android:id="@+id/mainLayout">
 
+    <ImageView
+        android:id="@+id/im_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="44dp"
+        android:layout_marginRight="44dp"
+        android:background="@drawable/ch_test_bg"/>
+
     <ListView
+        android:id="@+id/lv_left"
         android:layout_width="44dp"
         android:layout_height="wrap_content"
+
+        android:background="@color/white"
+        android:cacheColorHint="@color/white"
 
         android:divider="@null"
         android:scrollbars="none"
         android:dividerHeight="0dp"
         android:scrollbarStyle="outsideInset"
         android:overScrollFooter="@android:color/transparent"
-        android:footerDividersEnabled="false"
-
-        android:id="@+id/lvLeft"/>
+        android:footerDividersEnabled="false"/>
 
     <ListView
-        android:id="@+id/lvCenter"
+        android:id="@+id/lv_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:divider="@null"
         android:scrollbars="none"
         android:dividerHeight="0dp"
         android:scrollbarStyle="outsideInset"
         android:overScrollFooter="@android:color/transparent"
         android:footerDividersEnabled="false"
-
-        android:background="@drawable/ch_test_bg"
+        android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/lvLeft"
-        android:layout_toLeftOf="@+id/lvRight"
-        android:layout_toStartOf="@+id/lvRight" />
+        android:layout_toRightOf="@+id/lv_left"
+        android:layout_toLeftOf="@+id/lv_right"
+        android:layout_toStartOf="@+id/lv_right" />
 
     <ListView
+        android:id="@+id/lv_right"
         android:layout_width="44dp"
         android:layout_height="wrap_content"
-        android:id="@+id/lvRight"
-
+        android:background="@color/white"
+        android:cacheColorHint="@color/white"
         android:divider="@null"
         android:scrollbars="none"
         android:dividerHeight="0dp"
         android:scrollbarStyle="outsideInset"
         android:overScrollFooter="@android:color/transparent"
         android:footerDividersEnabled="false"
-
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
     <RelativeLayout
-        android:id="@+id/form"
+        android:id="@+id/form_layout"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
         android:background="@color/white"
@@ -63,7 +70,7 @@
         android:orientation="vertical" >
 
         <ImageButton
-            android:id="@+id/btnAttachment"
+            android:id="@+id/bt_attachment"
             android:background="@color/white"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -71,7 +78,7 @@
             android:src="@drawable/ab_bottom_icon_attachment"/>
 
         <EditText
-            android:id="@+id/sendingText"
+            android:id="@+id/et_message"
             android:layout_marginLeft="56dp"
             android:layout_marginRight="56dp"
             android:layout_width="wrap_content"
@@ -86,7 +93,7 @@
             android:inputType="text" />
 
         <ImageButton
-            android:id="@+id/btnSend"
+            android:id="@+id/bt_send"
             android:background="@color/white"
             android:layout_alignParentRight="true"
             android:layout_width="48dp"
@@ -94,5 +101,4 @@
             android:src="@drawable/ab_bottom_icon_send_now_blue"/>
 
     </RelativeLayout>
-
 </RelativeLayout>

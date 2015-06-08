@@ -41,10 +41,7 @@ public class ChatAdapter extends ArrayAdapter<OneComment> {
 	 * Вернуть элемент по индексу
 	 */
 	public OneComment getItem(int index) {
-		if (index >= 0 && index <= _chatHistory.size()) {
-			return _chatHistory.get(index);
-		}
-		return null;
+		return _chatHistory.get(index);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {

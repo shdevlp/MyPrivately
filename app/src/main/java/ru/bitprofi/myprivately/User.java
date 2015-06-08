@@ -9,7 +9,7 @@ import java.util.Random;
  * Created by Дмитрий on 15.05.2015.
  */
 
-@SuppressWarnings("serial") //with this annotation we are going to hide compiler warning
+@SuppressWarnings("serial")
 public class User implements Serializable {
     private Context _context;
 

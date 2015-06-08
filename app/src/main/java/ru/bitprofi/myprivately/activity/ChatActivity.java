@@ -2,6 +2,7 @@ package ru.bitprofi.myprivately.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -39,7 +40,7 @@ public class ChatActivity extends ActionBarActivity {
             actionBar.setDisplayShowCustomEnabled(true);
 
             LayoutInflater inflator = LayoutInflater.from(this);
-            View v = inflator.inflate(R.layout.actionbar_title, null);
+            View v = inflator.inflate(R.layout.actionbar_chat, null);
             ((TextView) v.findViewById(R.id.title_text)).setText(title);
             actionBar.setCustomView(v);
 
@@ -56,18 +57,21 @@ public class ChatActivity extends ActionBarActivity {
         setContentView(R.layout.activity_chat);
 
         Intent intent = getIntent();
-        User usr = (User)intent.getSerializableExtra("User");
+        //User usr = (User)intent.getSerializableExtra("User");
+        String name = intent.getStringExtra("UserName");
+        String status = intent.getStringExtra("UserStatus");
+        Integer image = intent.getIntExtra("UserImage", 0);
 
-        showActionBar(usr.getName());
+        showActionBar(name);
 
-        _lvLeft = (ListView) findViewById(R.id.lvLeft);
-        _lvCenter = (ListView) findViewById(R.id.lvCenter);
-        _lvRight = (ListView) findViewById(R.id.lvRight);
+        _lvLeft = (ListView) findViewById(R.id.lv_left);
+        _lvCenter = (ListView) findViewById(R.id.lv_center);
+        _lvRight = (ListView) findViewById(R.id.lv_right);
 
         ChatAdapter uAdapter = new ChatAdapter(this, R.drawable.cc_no_avatar_big);
-        for (int i = 0; i < 40; i++) {
-            uAdapter.add(new OneComment(false, null, true));
-        }
+       // for (int i = 0; i < 40; i++) {
+      //      uAdapter.add(new OneComment(false, null, true));
+        //}
         _lvCenter.setAdapter(uAdapter);
     }
 
