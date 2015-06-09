@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,9 +31,13 @@ import ru.bitprofi.myprivately.adapter.ContactsAdapter;
  * Created by Дмитрий on 05.06.2015.
  */
 public class ChatActivity extends ActionBarActivity {
-    private ListView _lvLeft = null;
-    private ListView _lvCenter = null;
-    private ListView _lvRight = null;
+    private ListView _lv_left   = null;
+    private ListView _lv_center = null;
+    private ListView _lv_right  = null;
+    private ImageButton _bt_send = null;
+    private EditText _message = null;
+    private boolean _left = false;
+    private ChatAdapter _adapter = null;
 
     private void showActionBar(String title) {
         ActionBar actionBar = getSupportActionBar();
@@ -64,15 +70,23 @@ public class ChatActivity extends ActionBarActivity {
 
         showActionBar(name);
 
-        _lvLeft = (ListView) findViewById(R.id.lv_left);
-        _lvCenter = (ListView) findViewById(R.id.lv_center);
-        _lvRight = (ListView) findViewById(R.id.lv_right);
+        _lv_left = (ListView) findViewById(R.id.lv_left);
+        _lv_center = (ListView) findViewById(R.id.lv_center);
+        _lv_right = (ListView) findViewById(R.id.lv_right);
+        _message = (EditText) findViewById(R.id.et_message);
 
-        ChatAdapter uAdapter = new ChatAdapter(this, R.drawable.cc_no_avatar_big);
-       // for (int i = 0; i < 40; i++) {
-      //      uAdapter.add(new OneComment(false, null, true));
-        //}
-        _lvCenter.setAdapter(uAdapter);
+        _bt_send = (ImageButton) findViewById(R.id.bt_send);
+        _bt_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _left = false;
+                _adapter.add(new OneComment(_left, _message.getText().toString()));
+                _message.getText().clear();
+            }
+        });
+
+        _adapter = new ChatAdapter(this);
+        _lv_center.setAdapter(_adapter);
     }
 
     @Override

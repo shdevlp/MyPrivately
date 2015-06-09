@@ -22,8 +22,8 @@ public class ChatAdapter extends ArrayAdapter<OneComment> {
 	private LinearLayout _wrapper;
 	private List<OneComment> _chatHistory;
 
-	public ChatAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
+	public ChatAdapter(Context context) {
+		super(context, 0);
 		_chatHistory = new ArrayList<OneComment>();
 	}
 
@@ -58,12 +58,11 @@ public class ChatAdapter extends ArrayAdapter<OneComment> {
             return null;
         }
 
-        if (!coment.getBackground()) {
-            _bubbleItem = (TextView) row.findViewById(R.id.comment);
-            _bubbleItem.setText(coment.getComment());
-            _bubbleItem.setBackgroundResource(coment.getLeft() ? R.drawable.ch_bubble_blue_9 : R.drawable.ch_bubble_white_9);
-            _wrapper.setGravity(coment.getLeft() ? Gravity.LEFT : Gravity.RIGHT);
-        }
+		_bubbleItem = (TextView) row.findViewById(R.id.comment);
+        _bubbleItem.setText(coment.getComment());
+        //_bubbleItem.setBackgroundResource(coment.getLeft() ? R.drawable.ch_bubble_white_blue_9 : R.drawable.ch_bubble_blue_blue_9);
+		_wrapper.setBackgroundResource(coment.getLeft() ? R.drawable.ch_bubble_white_blue_9 : R.drawable.ch_bubble_blue_blue_9);
+        _wrapper.setGravity(coment.getLeft() ? Gravity.LEFT : Gravity.RIGHT);
 
 		return row;
 	}
