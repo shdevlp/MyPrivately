@@ -1,15 +1,20 @@
 package ru.bitprofi.myprivately.activity;
 
+import ru.bitprofi.myprivately.sip.*;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -79,14 +84,27 @@ public class ChatActivity extends ActionBarActivity {
         _bt_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _left = false;
-                _adapter.add(new OneComment(_left, _message.getText().toString()));
-                _message.getText().clear();
+                String text = _message.getText().toString();
+                if (text.length() > 0) {
+                    _left = false;
+                    _adapter.add(new OneComment(_left, text));
+                    _message.getText().clear();
+                    hideKeyboard();
+                }
             }
         });
 
         _adapter = new ChatAdapter(this);
         _lv_center.setAdapter(_adapter);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager =
+                (InputMethodManager) this.
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override

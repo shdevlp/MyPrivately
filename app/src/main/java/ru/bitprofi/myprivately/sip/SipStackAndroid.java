@@ -39,6 +39,7 @@ import java.util.Properties;
 
 import ru.bitprofi.myprivately.GlobalSettings;
 import ru.bitprofi.myprivately.Utils;
+import ru.bitprofi.myprivately.iface.ISipEventListener;
 
 public class SipStackAndroid extends AsyncTask<Object, Object, Object>
         implements SipListener {

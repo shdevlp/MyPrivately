@@ -1,9 +1,14 @@
 package ru.bitprofi.myprivately;
 
+import android.content.Context;
+
+import java.util.ArrayList;
+
 /**
  * Created by Дмитрий on 27.05.2015.
  */
 public class GlobalSettings {
+    private static Context m_context;
     private static int _localPort;
     private static int _remotePort;
     private static String _remoteIp;
@@ -12,11 +17,14 @@ public class GlobalSettings {
     private static String _sipUserName;
     private static String _sipPassword;
 
+    private static ArrayList<User> _users;
+
     private GlobalSettings() {
         setLocalPort(5080);
         setRemotePort(5060);
         setRemoteIp("5.9.201.234");
         setTransport("udp");
+        _users = new ArrayList<User>();
     }
 
     private static class SingletonHolder {
@@ -27,8 +35,20 @@ public class GlobalSettings {
         return SingletonHolder.HOLDER_INSTANCE;
     }
 
+    public ArrayList<User> getUsers() {
+        return this._users;
+    }
+
     public static String getSipUserName() {
         return _sipUserName;
+    }
+
+    public Context getContext() {
+        return this.m_context;
+    }
+
+    public void setContext(Context context) {
+        this.m_context = context;
     }
 
     public static void setSipUserName(String name) {

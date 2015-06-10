@@ -1,9 +1,7 @@
 package ru.bitprofi.myprivately;
 
 import android.content.Context;
-
 import java.io.Serializable;
-import java.util.Random;
 
 /**
  * Created by Дмитрий on 15.05.2015.
@@ -11,87 +9,95 @@ import java.util.Random;
 
 @SuppressWarnings("serial")
 public class User implements Serializable {
-    private Context _context;
-
-    private String     _name;
-    private int        _image;
-    private UserStatus _status;
-    private String     _lastMessage;
-    private String     _lastTime;
-    private boolean    _lock;
-    private int        _unreadMessageCount;
+    private String     m_name;
+    private String     m_password;
+    private int        m_image;
+    private UserStatus m_status;
+    private String     m_last_message;
+    private String     m_last_time;
+    private int        m_unread_messages;
 
     public enum UserStatus {
         online,
         offline
     };
 
-    public User(Context context, String name, int image) {
-        this._context = context;
-        this._name = name;
-        this._image = image;
-        _status = UserStatus.offline;
-        _lastMessage = null;
-        _lastTime = "21:42";
-        _lock = Utils.getInstance().getRandomBoolean();
-        _unreadMessageCount = Utils.getInstance().getRandomInt(99);
+    public User(String name, int image) {
+        this.m_name = name;
+        this.m_image = image;
+        this.m_status = UserStatus.offline;
+        this.m_last_message = null;
+        this.m_last_time = "0:00";
+        this.m_unread_messages = 0;
+        this.m_password = null;
+    }
+
+    public User(String name, String password) {
+        this.m_name = name;
+        this.m_password = password;
+        this.m_image = 0;
+        this.m_unread_messages = 0;
+        this.m_status = UserStatus.offline;
+        this.m_last_message = null;
+        this.m_last_time = "0:00";
+    }
+
+    public String getPassword() {
+        return this.m_password;
+    }
+
+    public void setPassword(String password) {
+        this.m_password = password;
     }
 
     public String getName() {
-        return _name;
+        return this.m_name;
     }
 
     public int getImage() {
-        return _image;
+        return this.m_image;
     }
 
     public UserStatus getStatus() {
-        return _status;
+        return this.m_status;
     }
 
     public String getStatusString() {
-        if (_status == UserStatus.online) {
-            return _context.getString(R.string.user_status_online);
+        Context ctx = GlobalSettings.getInstance().getContext();
+        if (m_status == UserStatus.online) {
+            return ctx.getString(R.string.user_status_online);
         }
-        if (_status == UserStatus.offline) {
-            return _context.getString(R.string.user_status_offline);
+        if (m_status == UserStatus.offline) {
+            return ctx.getString(R.string.user_status_offline);
         }
         return null;
     }
 
     public void setStatus(UserStatus status) {
-        _status = status;
+        this.m_status = status;
     }
 
     public void setLastMessage(String message) {
-        _lastMessage = message;
+        this.m_last_message = message;
     }
 
     public String getLastMessage() {
-        return _lastMessage;
+        return this.m_last_message;
     }
 
     public void setLastTime(String time) {
-        _lastTime = time;
+        this.m_last_time = time;
     }
 
     public String getLastTime() {
-        return _lastTime;
+        return this.m_last_time;
     }
 
-    public void setLock(boolean lock) {
-        _lock = lock;
+    public void setUndeadMessages(int count) {
+        this.m_unread_messages = count;
     }
 
-    public boolean getLock() {
-        return _lock;
-    }
-
-    public void setUndeadMessageCount(int count) {
-        _unreadMessageCount = count;
-    }
-
-    public int getUnreadMessageCount() {
-        return _unreadMessageCount;
+    public int getUnreadMessages() {
+        return this.m_unread_messages;
     }
 }

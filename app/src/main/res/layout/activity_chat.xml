@@ -79,6 +79,7 @@
 
         <EditText
             android:id="@+id/et_message"
+            style="@style/InvisibleFocusHolder"
             android:layout_marginLeft="56dp"
             android:layout_marginRight="56dp"
             android:layout_width="wrap_content"

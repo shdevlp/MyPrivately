@@ -8,15 +8,27 @@ public class SipEvent extends EventObject{
         BYE,
         CALL
     }
-    public SipEventType _type;
 
-    public String _content;
-    public String _from;
+    private SipEventType m_type;
+    private String m_content;
+    private String m_from;
 
     public SipEvent(Object source, SipEventType type, String content, String from) {
         super(source);
-        this._type = type;
-        this._content = content;
-        this._from = from;
+        this.m_type = type;
+        this.m_content = content;
+        this.m_from = from;
+    }
+
+    public SipEventType getType() {
+        return this.m_type;
+    }
+
+    public String getContent() {
+        return this.m_content;
+    }
+
+    public String getFrom() {
+        return this.m_from;
     }
 }
