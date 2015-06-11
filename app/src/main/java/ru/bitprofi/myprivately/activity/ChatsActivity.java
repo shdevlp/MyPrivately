@@ -152,30 +152,14 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         }
     }
 
-
-
     private void doRegister() {
-        SipStackAndroid m_sip_stack = null;
-        SipRegister m_sip_reg = null;
-
-        if (m_sip_stack == null) {
-            m_sip_stack = SipStackAndroid.getInstance();
-        }
-        m_sip_stack.addSipListener(this);
-        m_sip_stack.execute(m_current_user, "12345", "5.9.201.234");
-
-        if (m_sip_reg == null) {
-            m_sip_reg = new SipRegister();
-        }
-        m_sip_reg.execute(m_current_user, "12345", "5.9.201.234");
+        SipStackAndroid.getInstance().addSipListener(this);
+        SipStackAndroid.getInstance().execute(m_current_user, "12345", "5.9.201.234");
+        new SipRegister().execute(m_current_user, "12345", "5.9.201.234");
     }
 
     public static void doMessage(String usr, String text) {
-        SipSendMessage m_sip_send = null;
-        if (m_sip_send == null) {
-            m_sip_send = new SipSendMessage();
-        }
         String to = "sip:" + usr + "@5.9.201.234";
-        m_sip_send.execute(to, text);
+        new SipSendMessage().execute(to, text);
     }
 }
