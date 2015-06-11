@@ -60,8 +60,7 @@ public class ChatAdapter extends ArrayAdapter<OneComment> {
 
 		_bubbleItem = (TextView) row.findViewById(R.id.comment);
         _bubbleItem.setText(coment.getComment());
-        //_bubbleItem.setBackgroundResource(coment.getLeft() ? R.drawable.ch_bubble_white_blue_9 : R.drawable.ch_bubble_blue_blue_9);
-		_bubbleItem.setBackgroundResource(coment.getLeft() ? R.drawable.bubble_yellow : R.drawable.bubble_green);
+		_bubbleItem.setBackgroundResource(coment.getLeft() ? R.drawable.bubble_green : R.drawable.bubble_yellow);
         _wrapper.setGravity(coment.getLeft() ? Gravity.LEFT : Gravity.RIGHT);
 
 		return row;

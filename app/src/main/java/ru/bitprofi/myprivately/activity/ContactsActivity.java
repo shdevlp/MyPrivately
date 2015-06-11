@@ -17,8 +17,10 @@ import com.software.shell.fab.ActionButton;
 
 import java.util.ArrayList;
 
+import ru.bitprofi.myprivately.GlobalSettings;
 import ru.bitprofi.myprivately.R;
 import ru.bitprofi.myprivately.User;
+import ru.bitprofi.myprivately.adapter.ChatsAdapter;
 import ru.bitprofi.myprivately.adapter.ContactsAdapter;
 
 /**
@@ -26,8 +28,8 @@ import ru.bitprofi.myprivately.adapter.ContactsAdapter;
  */
 public class ContactsActivity extends ActionBarActivity {
     private ListView _lvContacts = null;
-    // And then find it within the content view:
     private ActionButton _abEditChat = null;
+    private String m_current_user;
 
     private void showActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -45,35 +47,41 @@ public class ContactsActivity extends ActionBarActivity {
 
             actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.mainblue)));
         }
-
     }
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_contacts);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contacts);
 
-            showActionBar();
+        showActionBar();
 
-            _abEditChat = (ActionButton) findViewById(R.id.abEditChat);
-            _lvContacts = (ListView) findViewById(R.id.lvContacts);
+        _abEditChat = (ActionButton) findViewById(R.id.abEditChat);
+        _lvContacts = (ListView) findViewById(R.id.lvContacts);
 
-            ArrayList<User> users = new ArrayList<User>();
-            users.add(new User(this, "101", R.drawable.cc_no_avatar_big));
-            users.add(new User(this, "102", R.drawable.cc_no_avatar_big));
-            users.add(new User(this, "103", R.drawable.cc_no_avatar_big));
-            users.add(new User(this, "104", R.drawable.cc_no_avatar_big));
-            users.add(new User(this, "105", R.drawable.cc_no_avatar_big));
-            users.add(new User(this, "106", R.drawable.cc_no_avatar_big));
+        Intent intent = getIntent();
+        m_current_user = intent.getStringExtra("CurrentUserName");
 
-            ContactsAdapter uAdapter = new ContactsAdapter(this, users);
-            _lvContacts.setAdapter(uAdapter);
-            _lvContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                }
+        ArrayList<User> users = GlobalSettings.getInstance().getUsers();
 
-            });
+        //Убираем пользователя который зарегистрировался
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getName().equals(m_current_user)) {
+                users.remove(i);
+                break;
+            }
+        }
+
+        ContactsAdapter uAdapter = new ContactsAdapter(this, users);
+
+        _lvContacts.setAdapter(uAdapter);
+        _lvContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+        });
     }
 
     @Override

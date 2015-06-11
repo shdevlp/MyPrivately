@@ -14,6 +14,7 @@ public class GlobalSettings {
     private static String _remoteIp;
     private static String _localIp;
     private static String _transport;
+
     private static String _sipUserName;
     private static String _sipPassword;
 

@@ -10,60 +10,49 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:inputType="phone"
         android:ems="10"
         android:id="@+id/et_login"
-        android:background="@color/white"
         android:text="Номер телефона"
-        android:layout_above="@+id/et_password"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/et_password"
-        android:layout_alignStart="@+id/et_password"
-        android:layout_marginBottom="42dp" />
+        android:layout_alignStart="@+id/et_password" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_use_password"
+        android:layout_marginTop="72dp"
+        android:src="@drawable/r_switch_button_off"
+        android:layout_below="@+id/et_login"
+        android:layout_alignRight="@+id/et_password"
+        android:layout_alignEnd="@+id/et_password" />
 
     <EditText
+        android:editable="false"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/et_password"
-        android:background="@color/white"
-        android:text="Пароль"
-        android:layout_centerVertical="true"
+        android:text="12345"
+        android:layout_marginTop="71dp"
+        android:layout_below="@+id/bt_use_password"
         android:layout_alignLeft="@+id/et_password_retype"
         android:layout_alignStart="@+id/et_password_retype" />
 
     <EditText
+        android:editable="false"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:inputType="textPassword"
-        android:background="@color/white"
         android:ems="10"
         android:id="@+id/et_password_retype"
-        android:text="Повторите Пароль"
-        android:layout_above="@+id/bt_login"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ВОЙТИ"
-        android:id="@+id/bt_login"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/et_password_retype"
-        android:layout_alignStart="@+id/et_password_retype"
-        android:layout_marginBottom="93dp"
-        android:layout_alignRight="@+id/et_password_retype"
-        android:layout_alignEnd="@+id/et_password_retype" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Добро пожаловать,"
-        android:id="@+id/textView"
-        android:layout_marginTop="32dp"
-        android:layout_alignParentTop="true"
+        android:text="12345"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/et_password"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

@@ -17,9 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ru.bitprofi.myprivately.GlobalSettings;
 import ru.bitprofi.myprivately.R;
 import ru.bitprofi.myprivately.User;
 import ru.bitprofi.myprivately.adapter.ChatsAdapter;
@@ -35,15 +37,11 @@ import ru.bitprofi.myprivately.sip.SipStackAndroid;
 public class ChatsActivity extends ActionBarActivity implements ISipEventListener {
     private ListView _lvChats = null;
 
-    public static final String USER_ID = "Privately.USER_ID";
-
     public static DbAdapter dbHelper;
     public static INewMessageListener msgListener = null;
 
-    String usr;
-    String psw;
-    String srv;
-
+    private String m_current_user;
+    private String m_current_user_password;
 
     private void showActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -53,7 +51,6 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
 
             LayoutInflater inflator = LayoutInflater.from(this);
             View v = inflator.inflate(R.layout.actionbar_title, null);
-            //((TextView)v.findViewById(R.id.title_text)).setText(title);
             actionBar.setCustomView(v);
 
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -69,8 +66,8 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         setContentView(R.layout.activity_chats);
 
         Intent intent = getIntent();
-        String login = intent.getStringExtra("login");
-        String password = intent.getStringExtra("password");
+        m_current_user = intent.getStringExtra("login");
+        m_current_user_password = intent.getStringExtra("password");
 
         showActionBar();
 
@@ -78,33 +75,36 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         dbHelper = new DbAdapter(this);
         dbHelper.open();
 
-        //PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        refreshCreds();
-        doRegister();
-
 
         _lvChats = (ListView) findViewById(R.id.lvChats);
 
-        ArrayList<User> users = new ArrayList<User>();
-        for (int i = 0; i < 100; i++) {
-            users.add(new User(this, "+7901100000" + String.valueOf(i + 1), R.drawable.cc_no_avatar_big));
+        ArrayList<User> users = GlobalSettings.getInstance().getUsers();
+        //Убираем пользователя который зарегистрировался
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getName().equals(m_current_user)) {
+                users.remove(i);
+                break;
+            }
         }
-
         ChatsAdapter uAdapter = new ChatsAdapter(this, users);
         _lvChats.setAdapter(uAdapter);
         _lvChats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User usr = (User) parent.getItemAtPosition(position);
+                User target_user = (User) parent.getItemAtPosition(position);
 
                 Intent myIntent = new Intent(getBaseContext(), ChatActivity.class);
-                myIntent.putExtra("UserName", usr.getName());
-                myIntent.putExtra("UserStatus", usr.getStatusString());
-                myIntent.putExtra("UserImage", usr.getImage());
+                myIntent.putExtra("CurrentUserName", m_current_user);
+                myIntent.putExtra("TargetUserName", target_user.getName());
+
+                myIntent.putExtra("UserStatus", target_user.getStatusString());
+                myIntent.putExtra("UserImage", target_user.getImage());
                 startActivity(myIntent);
             }
-
         });
+
+        doRegister();
     }
 
     @Override
@@ -119,6 +119,7 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         switch (itemId) {
             case android.R.id.home:
                 Intent intent = new Intent(this, ContactsActivity.class);
+                intent.putExtra("CurrentUserName", m_current_user);
                 startActivity(intent);
                 break;
         }
@@ -127,14 +128,16 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
 
     @Override
     public void onSipMessage(SipEvent sipEventObject) {
-
         if (sipEventObject.getType() == SipEvent.SipEventType.MESSAGE) {
             final String text = sipEventObject.getContent();
-            final String to = usr;
+            final String to = m_current_user;
 
             String from = sipEventObject.getFrom();
             from = from.split("@")[0].split(":")[1];
             final String finalFrom = from;
+
+            Toast.makeText(getApplicationContext(), "From:" + from + " to:"+ to + " Message:" + text,
+                    Toast.LENGTH_SHORT).show();
 
             this.runOnUiThread(new Runnable() {
                 public void run() {
@@ -149,25 +152,30 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         }
     }
 
-    public void refreshCreds() {
-        /*
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        usr  = sharedPref.getString(SettingsActivity.PREF_LOG, "");
-        psw  = sharedPref.getString(SettingsActivity.PREF_PSW, "");
-        srv  = sharedPref.getString(SettingsActivity.PREF_SRV, "");
-        */
-    }
 
-    // Main actions
-    public void doRegister() {
-        SipStackAndroid.getInstance().execute(usr, psw, srv);
-        SipStackAndroid.getInstance().addSipListener(this);
-        new SipRegister().execute(usr, psw, srv);
+
+    private void doRegister() {
+        SipStackAndroid m_sip_stack = null;
+        SipRegister m_sip_reg = null;
+
+        if (m_sip_stack == null) {
+            m_sip_stack = SipStackAndroid.getInstance();
+        }
+        m_sip_stack.addSipListener(this);
+        m_sip_stack.execute(m_current_user, "12345", "5.9.201.234");
+
+        if (m_sip_reg == null) {
+            m_sip_reg = new SipRegister();
+        }
+        m_sip_reg.execute(m_current_user, "12345", "5.9.201.234");
     }
 
     public static void doMessage(String usr, String text) {
+        SipSendMessage m_sip_send = null;
+        if (m_sip_send == null) {
+            m_sip_send = new SipSendMessage();
+        }
         String to = "sip:" + usr + "@5.9.201.234";
-        new SipSendMessage().execute(to, text);
+        m_sip_send.execute(to, text);
     }
-
 }

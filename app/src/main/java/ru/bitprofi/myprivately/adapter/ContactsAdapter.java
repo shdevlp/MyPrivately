@@ -36,8 +36,7 @@ public class ContactsAdapter extends ArrayAdapter<User> {
         TextView  status = (TextView) convertView.findViewById(R.id.contact_status);
 
         name.setText(user.getName());
-       // image.setImageResource(user.getImage());
-        status.setText("Пользовательский статус");
+        status.setText(user.getStatusString());
 
         return convertView;
     }

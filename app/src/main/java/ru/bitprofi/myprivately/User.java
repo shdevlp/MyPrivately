@@ -25,7 +25,7 @@ public class User implements Serializable {
     public User(String name, int image) {
         this.m_name = name;
         this.m_image = image;
-        this.m_status = UserStatus.offline;
+        this.m_status = UserStatus.online;
         this.m_last_message = null;
         this.m_last_time = "0:00";
         this.m_unread_messages = 0;
@@ -35,9 +35,9 @@ public class User implements Serializable {
     public User(String name, String password) {
         this.m_name = name;
         this.m_password = password;
-        this.m_image = 0;
+        this.m_image = R.drawable.cc_no_avatar_big;
         this.m_unread_messages = 0;
-        this.m_status = UserStatus.offline;
+        this.m_status = UserStatus.online;
         this.m_last_message = null;
         this.m_last_time = "0:00";
     }

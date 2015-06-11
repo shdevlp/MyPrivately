@@ -94,7 +94,8 @@ public class SipStackAndroid extends AsyncTask<Object, Object, Object>
     }
 
     private static void initialize() {
-        _gs.setLocalIp(_utils.getIPAddress(true));
+        String localIp = _utils.getIPAddress(true);
+        _gs.setLocalIp(localIp);
 
         sipStack = null;
         sipFactory = SipFactory.getInstance();

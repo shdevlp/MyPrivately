@@ -20,10 +20,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.google.android.gms:play-services:7.3.0'
-    compile 'javax.sip:android-jain-sip-ri:1.2.234'
-    compile 'org.apache.logging.log4j:log4j:2.3'
     compile 'com.github.shell-software:fab:1.1.1'
+    compile files('libs/android-jain-sip-ri-1.2.228.jar')
+    compile files('libs/log4j-1.2.17.jar')
 }

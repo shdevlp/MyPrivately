@@ -39,7 +39,7 @@ public class ChatsAdapter extends ArrayAdapter<User> {
         TextView  status = (TextView) convertView.findViewById(R.id.user_status);
         TextView  lastTime = (TextView) convertView.findViewById(R.id.user_last_time);
         TextView  lastMessage = (TextView) convertView.findViewById(R.id.user_last_message);
-        TextView  unreadMessageCount = (TextView)convertView.findViewById(R.id.user_unread_message_count);
+        TextView  unreadMessages = (TextView)convertView.findViewById(R.id.user_unread_messages);
 
         name.setText(user.getName());
         image.setImageResource(user.getImage());
@@ -48,21 +48,7 @@ public class ChatsAdapter extends ArrayAdapter<User> {
             lastMessage.setText("Последнее сообщение");
         }
         lastTime.setText(user.getLastTime());
-/*
-        if (user.getLock()){
-            lock.setImageResource(R.drawable.lock);
-        } else {
-            lock.setImageResource(R.drawable.unlock);
-        }
-*/
-        final int count = user.getUnreadMessageCount();
-        String str = null;
-        if (count < 10) {
-            str = "  " + String.valueOf(count);
-        } else {
-            str = String.valueOf(count);
-        }
-        unreadMessageCount.setText(str);
+        unreadMessages.setText(String.valueOf(user.getUnreadMessages()));
 
         return convertView;
     }

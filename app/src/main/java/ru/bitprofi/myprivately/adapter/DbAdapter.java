@@ -51,15 +51,15 @@ public class DbAdapter {
     }
 
     public boolean deleteAllMessages() {
+
         int doneDelete = 0;
         doneDelete = mDb.delete(SQLITE_TABLE, null , null);
         Log.w(TAG, Integer.toString(doneDelete));
+
         return doneDelete > 0;
     }
 
     public long createMessage(String text, String from, String to) {
-        Log.w(TAG, "Insert message: '" + text + "'");
-
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TEXT, text);
         initialValues.put(KEY_FROM, from);
@@ -68,19 +68,18 @@ public class DbAdapter {
     }
 
     public Cursor fetchMesagesByCreds(String usr1, String usr2) throws SQLException {
-        Cursor mCursor;
-        mCursor = mDb.query(
-                true,
-                SQLITE_TABLE,
-                null,
-                KEY_FROM + " = '" + usr1 + "' and " + KEY_TO + " = " + usr2 +
-                " or " +
-                KEY_FROM + " = '" + usr2 + "' and " + KEY_TO + " = " + usr1,
-                null, null, null, KEY_TS + " ASC", null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
+        Cursor cursor = null;
+        try {
+            cursor = mDb.query(true, SQLITE_TABLE, null, KEY_FROM + " = '" + usr1 + "' and " + KEY_TO + " = " + usr2 +
+                    " or " + KEY_FROM + " = '" + usr2 + "' and " + KEY_TO + " = " + usr1, null, null, null, KEY_TS + " ASC", null);
+        } catch (SQLException sqle) {
+            return cursor;
         }
-        return mCursor;
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
     private class DatabaseHelper extends SQLiteOpenHelper {
@@ -90,14 +89,11 @@ public class DbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            Log.w(TAG, DATABASE_CREATE);
             db.execSQL(DATABASE_CREATE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS " + SQLITE_TABLE);
             onCreate(db);
         }
