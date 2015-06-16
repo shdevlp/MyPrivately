@@ -27,8 +27,8 @@ import ru.bitprofi.myprivately.adapter.ContactsAdapter;
  * Created by Дмитрий on 05.06.2015.
  */
 public class ContactsActivity extends ActionBarActivity {
-    private ListView _lvContacts = null;
-    private ActionButton _abEditChat = null;
+    private ListView m_lv_contacts = null;
+    private ActionButton m_edit_chat = null;
     private String m_current_user;
 
     private void showActionBar() {
@@ -56,8 +56,8 @@ public class ContactsActivity extends ActionBarActivity {
 
         showActionBar();
 
-        _abEditChat = (ActionButton) findViewById(R.id.abEditChat);
-        _lvContacts = (ListView) findViewById(R.id.lvContacts);
+        m_edit_chat = (ActionButton) findViewById(R.id.abEditChat);
+        m_lv_contacts = (ListView) findViewById(R.id.lvContacts);
 
         Intent intent = getIntent();
         m_current_user = intent.getStringExtra("CurrentUserName");
@@ -75,12 +75,11 @@ public class ContactsActivity extends ActionBarActivity {
 
         ContactsAdapter uAdapter = new ContactsAdapter(this, users);
 
-        _lvContacts.setAdapter(uAdapter);
-        _lvContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        m_lv_contacts.setAdapter(uAdapter);
+        m_lv_contacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
-
         });
     }
 

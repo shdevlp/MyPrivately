@@ -16,11 +16,11 @@ import ru.bitprofi.myprivately.R;
 import ru.bitprofi.myprivately.User;
 
 public class ContactsAdapter extends ArrayAdapter<User> {
-    private Context _context;
+    private Context m_context;
 
     public ContactsAdapter(Context context, ArrayList<User> users) {
         super(context, 0, users);
-        _context = context;
+        m_context = context;
     }
 
     @Override

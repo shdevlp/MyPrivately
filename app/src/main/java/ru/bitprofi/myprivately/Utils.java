@@ -17,10 +17,10 @@ import java.util.Random;
  * Created by Дмитрий on 27.05.2015.
  */
 public class Utils {
-    private Random _random = null;
+    private Random m_random = null;
 
     private Utils() {
-        _random = new Random();
+        m_random = new Random();
     }
 
     private static class SingletonHolder {
@@ -62,11 +62,11 @@ public class Utils {
     }
 
     public int getRandomInt(int n) {
-        return _random.nextInt(n);
+        return m_random.nextInt(n);
     }
 
     public boolean getRandomBoolean() {
-        return _random.nextBoolean();
+        return m_random.nextBoolean();
     }
 
     public void setHeaderActionBar(Activity activity, String heading, boolean backBtn) {

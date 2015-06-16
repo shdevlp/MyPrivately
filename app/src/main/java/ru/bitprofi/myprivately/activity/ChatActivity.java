@@ -1,12 +1,9 @@
 package ru.bitprofi.myprivately.activity;
 
-import ru.bitprofi.myprivately.adapter.DbAdapter;
-import ru.bitprofi.myprivately.iface.INewMessageListener;
 import ru.bitprofi.myprivately.sip.*;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -38,24 +35,19 @@ import ru.bitprofi.myprivately.adapter.ContactsAdapter;
 /**
  * Created by Дмитрий on 05.06.2015.
  */
-public class ChatActivity extends ActionBarActivity implements INewMessageListener {
-    private ListView m_lv_left   = null;
-    private ListView m_lv_center = null;
-    private ListView m_lv_right  = null;
-
-    private ImageButton m_bt_send = null;
-    private ChatAdapter m_adapter = null;
-    private EditText m_message = null;
-    private TextView m_title_view = null;
-    private TextView m_status_view = null;
+public class ChatActivity extends ActionBarActivity {
     private boolean m_left = false;
 
-    private String m_current_user = null;
-    private String m_target_user = null;
-    private String m_current_user_status = null;
-    private Integer m_current_user_image = 0;
+    private ListView  m_lv_left   = null;
+    private ListView  m_lv_center = null;
+    private ListView  m_lv_right  = null;
 
-    private void showActionBar(String title, String status) {
+    private ImageButton m_bt_send = null;
+    private EditText m_message = null;
+
+    private ChatAdapter m_adapter = null;
+
+    private void showActionBar(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
@@ -63,10 +55,7 @@ public class ChatActivity extends ActionBarActivity implements INewMessageListen
 
             LayoutInflater inflator = LayoutInflater.from(this);
             View v = inflator.inflate(R.layout.actionbar_chat, null);
-            m_title_view = ((TextView) v.findViewById(R.id.title_text));
-            m_title_view.setText(title);
-            m_status_view = ((TextView) v.findViewById(R.id.status_text));
-            m_status_view.setText(status);
+            ((TextView) v.findViewById(R.id.title_text)).setText(title);
             actionBar.setCustomView(v);
 
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -76,39 +65,40 @@ public class ChatActivity extends ActionBarActivity implements INewMessageListen
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         Intent intent = getIntent();
+        //User usr = (User)intent.getSerializableExtra("User");
+        String name = intent.getStringExtra("UserName");
+        String status = intent.getStringExtra("UserStatus");
+        Integer image = intent.getIntExtra("UserImage", 0);
 
-        m_current_user = intent.getStringExtra("CurrentUserName");
-        m_target_user =  intent.getStringExtra("TargetUserName");
-
-        m_current_user_status = intent.getStringExtra("UserStatus");
-        m_current_user_image = intent.getIntExtra("UserImage", 0);
-
-        showActionBar(m_target_user, m_current_user_status);
+        showActionBar(name);
 
         m_lv_left = (ListView) findViewById(R.id.lv_left);
-        m_lv_center = (ListView) findViewById(R.id.lv_center);
         m_lv_right = (ListView) findViewById(R.id.lv_right);
+        m_lv_center = (ListView) findViewById(R.id.lv_center);
         m_message = (EditText) findViewById(R.id.et_message);
 
         m_bt_send = (ImageButton) findViewById(R.id.bt_send);
         m_bt_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
+                String text = m_message.getText().toString();
+                if (text.length() > 0) {
+                    m_left = false;
+                    m_adapter.add(new OneComment(m_left, text));
+                    m_message.getText().clear();
+                    hideKeyboard();
+                }
             }
         });
 
         m_adapter = new ChatAdapter(this);
         m_lv_center.setAdapter(m_adapter);
-
-        displayList();
     }
 
     private void hideKeyboard() {
@@ -135,61 +125,5 @@ public class ChatActivity extends ActionBarActivity implements INewMessageListen
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Отправка сообщения
-     */
-    private void sendMessage() {
-        String text = m_message.getText().toString();
-        if (text.length() > 0) {
-            m_message.getText().clear();
-            m_left = false;
-            ChatsActivity.dbHelper.createMessage(text, m_current_user, m_target_user);
-            ChatsActivity.doMessage(m_target_user, text);
-            hideKeyboard();
-            displayList();
-            if (m_adapter.getCount()==0) {
-                ChatsActivity.dbHelper.createMessage(text, m_current_user, m_target_user);
-                ChatsActivity.doMessage(m_target_user, text);
-                displayList();
-            }
-
-        }
-    }
-
-    /**
-     * Получили сообщение от когото
-     * @param from
-     */
-    @Override
-    public void onMessage(String from) {
-        displayList();
-    }
-
-    /**
-     * Отобразить все сообщения, подгрузка из базы данных
-     */
-    private void displayList() {
-        Cursor cursor = ChatsActivity.dbHelper.fetchMesagesByCreds(m_target_user, m_current_user);
-
-        if (m_adapter != null) {
-            m_adapter.clear();
-            m_adapter = null;
-        }
-        m_adapter = new ChatAdapter(this);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            while (cursor.moveToNext()) {
-                final String keyFrom = cursor.getString(cursor.getColumnIndex(DbAdapter.KEY_FROM));
-                final String keyText = cursor.getString(cursor.getColumnIndex(DbAdapter.KEY_TEXT));
-                final boolean isLeft = keyFrom.equalsIgnoreCase(m_current_user);
-                final String message = keyFrom + "\n" + keyText;
-
-                m_adapter.add(new OneComment(isLeft, message));
-            }
-        }
-
-        m_lv_center.setAdapter(m_adapter);
     }
 }

@@ -1,20 +1,20 @@
 package ru.bitprofi.myprivately;
 
 public class OneComment {
-	private boolean _left;
-	private String _comment;
+	private boolean m_left;
+	private String m_comment;
 
 	public OneComment(boolean left, String comment) {
 		super();
-		this._left = left;
-		this._comment = comment;
+		this.m_left = left;
+		this.m_comment = comment;
 	}
 
 	public boolean getLeft() {
-		return this._left;
+		return this.m_left;
 	}
 
 	public String getComment() {
-		return this._comment;
+		return this.m_comment;
 	}
 }

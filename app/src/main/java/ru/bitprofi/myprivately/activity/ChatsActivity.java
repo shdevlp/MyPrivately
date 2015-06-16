@@ -35,10 +35,10 @@ import ru.bitprofi.myprivately.sip.SipStackAndroid;
 
 
 public class ChatsActivity extends ActionBarActivity implements ISipEventListener {
-    private ListView _lvChats = null;
+    private ListView m_lv_chats = null;
 
-    public static DbAdapter dbHelper;
-    public static INewMessageListener msgListener = null;
+    public static DbAdapter m_db_helper;
+    public static INewMessageListener m_msg_listener = null;
 
     private String m_current_user;
     private String m_current_user_password;
@@ -72,11 +72,11 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         showActionBar();
 
         // Database
-        dbHelper = new DbAdapter(this);
-        dbHelper.open();
+        m_db_helper = new DbAdapter(this);
+        m_db_helper.open();
 
 
-        _lvChats = (ListView) findViewById(R.id.lvChats);
+        m_lv_chats = (ListView) findViewById(R.id.lvChats);
 
         ArrayList<User> users = GlobalSettings.getInstance().getUsers();
         //Убираем пользователя который зарегистрировался
@@ -88,8 +88,8 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
             }
         }
         ChatsAdapter uAdapter = new ChatsAdapter(this, users);
-        _lvChats.setAdapter(uAdapter);
-        _lvChats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        m_lv_chats.setAdapter(uAdapter);
+        m_lv_chats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User target_user = (User) parent.getItemAtPosition(position);
@@ -141,9 +141,9 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
 
             this.runOnUiThread(new Runnable() {
                 public void run() {
-                    dbHelper.createMessage(text, finalFrom, to);
-                    if (msgListener != null) {
-                        msgListener.onMessage(finalFrom);
+                    m_db_helper.createMessage(text, finalFrom, to);
+                    if (m_msg_listener != null) {
+                        m_msg_listener.onMessage(finalFrom);
                     }
                 }
             });

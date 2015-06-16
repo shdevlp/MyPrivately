@@ -5,6 +5,7 @@ import android.gov.nist.javax.sip.clientauthutils.UserCredentials;
 import android.javax.sip.ClientTransaction;
 
 import ru.bitprofi.myprivately.GlobalSettings;
+import ru.bitprofi.myprivately.sip2.UserCredentialsImpl;
 
 public class AccountManagerImpl implements AccountManager {
     public UserCredentials getCredentials(ClientTransaction challengedTransaction, String realm) {

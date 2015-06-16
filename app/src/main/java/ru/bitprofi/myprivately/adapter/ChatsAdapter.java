@@ -19,11 +19,11 @@ import ru.bitprofi.myprivately.User;
  * Created by Дмитрий on 15.05.2015.
  */
 public class ChatsAdapter extends ArrayAdapter<User> {
-    private Context _context;
+    private Context m_context;
 
     public ChatsAdapter(Context context, ArrayList<User> users) {
         super(context, 0, users);
-        _context = context;
+        m_context = context;
     }
 
     @Override

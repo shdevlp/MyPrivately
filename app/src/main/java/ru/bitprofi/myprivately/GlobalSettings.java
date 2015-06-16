@@ -9,23 +9,23 @@ import java.util.ArrayList;
  */
 public class GlobalSettings {
     private static Context m_context;
-    private static int _localPort;
-    private static int _remotePort;
-    private static String _remoteIp;
-    private static String _localIp;
-    private static String _transport;
+    private static int m_local_port;
+    private static int m_remote_port;
+    private static String m_remote_ip;
+    private static String m_local_ip;
+    private static String m_transport;
 
-    private static String _sipUserName;
-    private static String _sipPassword;
+    private static String m_user_name;
+    private static String m_password;
 
-    private static ArrayList<User> _users;
+    private static ArrayList<User> m_users;
 
     private GlobalSettings() {
         setLocalPort(5080);
         setRemotePort(5060);
         setRemoteIp("5.9.201.234");
         setTransport("udp");
-        _users = new ArrayList<User>();
+        m_users = new ArrayList<User>();
     }
 
     private static class SingletonHolder {
@@ -37,11 +37,11 @@ public class GlobalSettings {
     }
 
     public ArrayList<User> getUsers() {
-        return this._users;
+        return this.m_users;
     }
 
-    public static String getSipUserName() {
-        return _sipUserName;
+    public static String getUserName() {
+        return m_user_name;
     }
 
     public Context getContext() {
@@ -53,62 +53,62 @@ public class GlobalSettings {
     }
 
     public static void setSipUserName(String name) {
-        _sipUserName = name;
+        m_user_name = name;
     }
 
     public static String getSipPassword() {
-        return _sipPassword;
+        return m_password;
     }
 
     public static void setSipPassword(String pwd) {
-        _sipPassword = pwd;
+        m_password = pwd;
     }
 
     public static String getTransport() {
-        return _transport;
+        return m_transport;
     }
 
     public  static void setTransport(String tr) {
-        _transport = tr;
+        m_transport = tr;
     }
 
     public static String getLocalIp() {
-        return _localIp;
+        return m_local_ip;
     }
 
     public static void setLocalIp(String localIp) {
-        _localIp = localIp;
+        m_local_ip = localIp;
     }
 
     public static int getLocalPort() {
-        return _localPort;
+        return m_local_port;
     }
 
     public static void setLocalPort(int localPort) {
-        _localPort = localPort;
+        m_local_port = localPort;
     }
 
     public static String getLocalEndpoint() {
-        return _localIp + ":" + _localPort;
+        return m_local_ip + ":" + m_local_port;
     }
 
     public static String getRemoteIp() {
-        return _remoteIp;
+        return m_remote_ip;
     }
 
     public static void setRemoteIp(String remoteIp) {
-        _remoteIp = remoteIp;
+        m_remote_ip = remoteIp;
     }
 
     public static int getRemotePort() {
-        return _remotePort;
+        return m_remote_port;
     }
 
     public static void setRemotePort(int remotePort) {
-        _remotePort = remotePort;
+        m_remote_port = remotePort;
     }
 
     public static String getRemoteEndpoint() {
-        return _remoteIp + ":" + _remotePort;
+        return m_remote_ip + ":" + m_remote_port;
     }
 }

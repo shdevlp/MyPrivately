@@ -18,30 +18,30 @@ import ru.bitprofi.myprivately.OneComment;
 import ru.bitprofi.myprivately.R;
 
 public class ChatAdapter extends ArrayAdapter<OneComment> {
-	private TextView _bubbleItem;
-	private LinearLayout _wrapper;
-	private List<OneComment> _chatHistory;
+	private TextView m_bubble_item;
+	private LinearLayout m_wrapper;
+	private List<OneComment> m_chat_history;
 
 	public ChatAdapter(Context context) {
 		super(context, 0);
-		_chatHistory = new ArrayList<OneComment>();
+		m_chat_history = new ArrayList<OneComment>();
 	}
 
 	@Override
 	public void add(OneComment object) {
-		_chatHistory.add(object);
+		m_chat_history.add(object);
 		super.add(object);
 	}
 
 	public int getCount() {
-		return _chatHistory.size();
+		return m_chat_history.size();
 	}
 
 	/*
 	 * Вернуть элемент по индексу
 	 */
 	public OneComment getItem(int index) {
-		return _chatHistory.get(index);
+		return m_chat_history.get(index);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -51,17 +51,17 @@ public class ChatAdapter extends ArrayAdapter<OneComment> {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.item_chat, parent, false);
 		}
-		_wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
+		m_wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
 
 		OneComment coment = getItem(position);
         if (coment == null) {
             return null;
         }
 
-		_bubbleItem = (TextView) row.findViewById(R.id.comment);
-        _bubbleItem.setText(coment.getComment());
-		_bubbleItem.setBackgroundResource(coment.getLeft() ? R.drawable.bubble_green : R.drawable.bubble_yellow);
-        _wrapper.setGravity(coment.getLeft() ? Gravity.LEFT : Gravity.RIGHT);
+		m_bubble_item = (TextView) row.findViewById(R.id.comment);
+        m_bubble_item.setText(coment.getComment());
+		m_bubble_item.setBackgroundResource(coment.getLeft() ? R.drawable.bubble_green : R.drawable.bubble_yellow);
+        m_wrapper.setGravity(coment.getLeft() ? Gravity.LEFT : Gravity.RIGHT);
 
 		return row;
 	}
