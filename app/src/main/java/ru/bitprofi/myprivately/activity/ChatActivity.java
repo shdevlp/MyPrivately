@@ -1,7 +1,5 @@
 package ru.bitprofi.myprivately.activity;
 
-import ru.bitprofi.myprivately.sip.*;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -31,11 +29,14 @@ import ru.bitprofi.myprivately.User;
 import ru.bitprofi.myprivately.adapter.ChatAdapter;
 import ru.bitprofi.myprivately.adapter.ChatsAdapter;
 import ru.bitprofi.myprivately.adapter.ContactsAdapter;
+import ru.bitprofi.myprivately.iface.INewMessageListener;
+import ru.bitprofi.myprivately.sip.SipSendMessage;
+import ru.bitprofi.myprivately.sip.SipStackAndroid;
 
 /**
  * Created by Дмитрий on 05.06.2015.
  */
-public class ChatActivity extends ActionBarActivity {
+public class ChatActivity extends ActionBarActivity implements INewMessageListener {
     private boolean m_left = false;
 
     private ListView  m_lv_left   = null;
@@ -71,12 +72,13 @@ public class ChatActivity extends ActionBarActivity {
         setContentView(R.layout.activity_chat);
 
         Intent intent = getIntent();
-        //User usr = (User)intent.getSerializableExtra("User");
-        String name = intent.getStringExtra("UserName");
-        String status = intent.getStringExtra("UserStatus");
-        Integer image = intent.getIntExtra("UserImage", 0);
 
-        showActionBar(name);
+        String userName = intent.getStringExtra("CurrentUserName");
+        final String targetUserName = intent.getStringExtra("TargetUserName");
+        String userStatus = intent.getStringExtra("UserStatus");
+        Integer userImage = intent.getIntExtra("UserImage", 0);
+
+        showActionBar(targetUserName);
 
         m_lv_left = (ListView) findViewById(R.id.lv_left);
         m_lv_right = (ListView) findViewById(R.id.lv_right);
@@ -94,6 +96,7 @@ public class ChatActivity extends ActionBarActivity {
                     m_message.getText().clear();
                     hideKeyboard();
                 }
+                doMessage(targetUserName, text);
             }
         });
 
@@ -125,5 +128,19 @@ public class ChatActivity extends ActionBarActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Послать сообщение
+     * @param usr
+     * @param text
+     */
+    private void doMessage(String usr, String text) {
+        String to = "sip:" + usr + "@" + SipStackAndroid.remoteIp;
+        new SipSendMessage().execute(to, text);
+    }
+
+    @Override
+    public void onMessage(String from) {
     }
 }

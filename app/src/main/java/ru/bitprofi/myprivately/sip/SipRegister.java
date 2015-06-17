@@ -16,34 +16,40 @@ import android.os.AsyncTask;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import ru.bitprofi.myprivately.GlobalSettings;
-
-public class SipRegister extends AsyncTask<Object, Object, Object> {
-    private GlobalSettings _gs = GlobalSettings.getInstance();
-
-    private void send_register() {
+/**
+ * Created by Дмитрий on 16.06.2015.
+ */
+public class SipRegister extends AsyncTask<Void, Void, Void> {
+    private void sendRegister() {
         try {
             System.out.println();
-            SipStackAndroid sip = SipStackAndroid.getInstance();
-            AddressFactory addressFactory = sip.addressFactory;
-            SipProvider sipProvider = sip.sipProvider;
-            MessageFactory messageFactory = sip.messageFactory;
-            HeaderFactory headerFactory = sip.headerFactory;
+
+            SipStackAndroid.getInstance();
+            AddressFactory addressFactory = SipStackAndroid.addressFactory;
+
+            SipStackAndroid.getInstance();
+            SipProvider sipProvider = SipStackAndroid.sipProvider;
+
+            SipStackAndroid.getInstance();
+            MessageFactory messageFactory = SipStackAndroid.messageFactory;
+
+            SipStackAndroid.getInstance();
+            HeaderFactory headerFactory = SipStackAndroid.headerFactory;
 
             // Create addresses and via header for the request
             Address fromAddress = addressFactory.createAddress("sip:"
-                    + _gs.getSipUserName() + "@"
-                    + _gs.getRemoteIp());
-            fromAddress.setDisplayName(_gs.getSipUserName());
+                    + SipStackAndroid.sipUserName + "@" + SipStackAndroid.remoteIp);
+            fromAddress.setDisplayName(SipStackAndroid.sipUserName);
+
             Address toAddress = addressFactory.createAddress("sip:"
-                    + _gs.getSipUserName() + "@"
-                    + _gs.getRemoteIp());
-            toAddress.setDisplayName(_gs.getSipUserName());
+                    + SipStackAndroid.sipUserName + "@" + SipStackAndroid.remoteIp);
+            toAddress.setDisplayName(SipStackAndroid.sipUserName);
 
             Address contactAddress = createContactAddress();
-            ArrayList<ViaHeader> viaHeaders = createViaHeader();
+            ArrayList<ViaHeader> viaHeaders = SipStackAndroid.createViaHeader();
             URI requestURI = addressFactory.createAddress(
-                    "sip:" + _gs.getRemoteEndpoint()).getURI();
+                    "sip:" + SipStackAndroid.remoteEndpoint).getURI();
+
             // Build the request
             final Request request = messageFactory.createRequest(requestURI,
                     Request.REGISTER, sipProvider.getNewCallId(),
@@ -56,13 +62,15 @@ public class SipRegister extends AsyncTask<Object, Object, Object> {
             request.addHeader(headerFactory.createContactHeader(contactAddress));
             ExpiresHeader eh = headerFactory.createExpiresHeader(300);
             request.addHeader(eh);
+
             // Print the request
             System.out.println(request.toString());
-
             // Send the request --- triggers an IOException
             // sipProvider.sendRequest(request);
+
             ClientTransaction transaction = sipProvider
                     .getNewClientTransaction(request);
+
             // Send the request statefully, through the client transaction.
             transaction.sendRequest();
         } catch (Exception e) {
@@ -73,48 +81,18 @@ public class SipRegister extends AsyncTask<Object, Object, Object> {
     private Address createContactAddress() {
         try {
             SipStackAndroid.getInstance();
-            return SipStackAndroid.addressFactory.createAddress("sip:"
-                    + _gs.getSipUserName() + "@"
-                    + _gs.getLocalEndpoint() + ";transport=udp"
-                    + ";registering_acc=" + _gs.getRemoteIp());
+            return SipStackAndroid.addressFactory.createAddress("sip:" + SipStackAndroid.sipUserName + "@"
+                    + SipStackAndroid.localEndpoint + ";transport=udp"
+                    + ";registering_acc="+SipStackAndroid.registeringAcc);
         } catch (ParseException e) {
             return null;
         }
     }
 
-    private ArrayList<ViaHeader> createViaHeader() {
-        ArrayList<ViaHeader> viaHeaders = new ArrayList<ViaHeader>();
-        ViaHeader myViaHeader;
-        try {
-            SipStackAndroid.getInstance();
-            myViaHeader = SipStackAndroid.headerFactory.createViaHeader(
-                    _gs.getLocalIp(),
-                    _gs.getLocalPort(),
-                    _gs.getTransport(), null);
-            myViaHeader.setRPort();
-            viaHeaders.add(myViaHeader);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (InvalidArgumentException e) {
-            e.printStackTrace();
-        }
-        return viaHeaders;
-
-    }
-
-
     @Override
-    protected Object doInBackground(Object... params) {
+    protected Void doInBackground(Void... params) {
         try {
-            String sipUsername = (String) params[0];
-            String sipPassword = (String) params[1];
-            String sipDomain = (String) params[2];
-
-            _gs.setSipUserName(sipUsername);
-            _gs.setSipPassword(sipPassword);
-            _gs.setRemoteIp(sipDomain);
-
-            send_register();
+            sendRegister();
         } catch (Exception e) {
             e.printStackTrace();
         }
