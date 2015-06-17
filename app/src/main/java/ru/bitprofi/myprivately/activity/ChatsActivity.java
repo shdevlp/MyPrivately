@@ -31,6 +31,7 @@ import ru.bitprofi.myprivately.iface.ISipEventListener;
 import ru.bitprofi.myprivately.sip.SipEvent;
 import ru.bitprofi.myprivately.sip.SipRegister;
 import ru.bitprofi.myprivately.sip.SipStackAndroid;
+import ru.bitprofi.myprivately.sip.SipStackSettings;
 
 public class ChatsActivity extends ActionBarActivity implements ISipEventListener {
     private ListView m_lv_chats = null;
@@ -64,8 +65,8 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
      */
     private void doRegister(String login, String password) {
         SipStackAndroid.getInstance().addSipListener(this);
-        SipStackAndroid.sipUserName = login;
-        SipStackAndroid.sipPassword = password;
+        SipStackSettings.userName = login;
+        SipStackSettings.password = password;
         m_sip_register = new SipRegister();
         m_sip_register.execute();
     }
@@ -90,7 +91,7 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         //Убираем пользователя который зарегистрировался
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
-            if (user.getName().equals(SipStackAndroid.sipUserName)) {
+            if (user.getName().equals(SipStackSettings.userName)) {
                 users.remove(i);
                 break;
             }
@@ -103,9 +104,8 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
                 User target_user = (User) parent.getItemAtPosition(position);
 
                 Intent myIntent = new Intent(getBaseContext(), ChatActivity.class);
-                String usrName = SipStackAndroid.getInstance().sipUserName;
 
-                myIntent.putExtra("CurrentUserName", usrName);
+                myIntent.putExtra("CurrentUserName", SipStackSettings.userName);
                 myIntent.putExtra("TargetUserName", target_user.getName());
 
                 myIntent.putExtra("UserStatus", target_user.getStatusString());
@@ -127,8 +127,7 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         switch (itemId) {
             case android.R.id.home:
                 Intent intent = new Intent(this, ContactsActivity.class);
-                String usrName = SipStackAndroid.getInstance().sipUserName;
-                intent.putExtra("CurrentUserName", usrName);
+                intent.putExtra("CurrentUserName", SipStackSettings.userName);
                 startActivity(intent);
                 break;
         }
@@ -140,7 +139,7 @@ public class ChatsActivity extends ActionBarActivity implements ISipEventListene
         int i = 0;
         if (sipEventObject.getType() == SipEvent.SipEventType.MESSAGE) {
             final String text = sipEventObject.getContent();
-            final String to = SipStackAndroid.sipUserName;
+            final String to = SipStackSettings.userName;
 
             String from = sipEventObject.getFrom();
             from = from.split("@")[0].split(":")[1];

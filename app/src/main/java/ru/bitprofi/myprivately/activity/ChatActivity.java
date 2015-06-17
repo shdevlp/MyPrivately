@@ -32,6 +32,7 @@ import ru.bitprofi.myprivately.adapter.ContactsAdapter;
 import ru.bitprofi.myprivately.iface.INewMessageListener;
 import ru.bitprofi.myprivately.sip.SipSendMessage;
 import ru.bitprofi.myprivately.sip.SipStackAndroid;
+import ru.bitprofi.myprivately.sip.SipStackSettings;
 
 /**
  * Created by Дмитрий on 05.06.2015.
@@ -136,7 +137,7 @@ public class ChatActivity extends ActionBarActivity implements INewMessageListen
      * @param text
      */
     private void doMessage(String usr, String text) {
-        String to = "sip:" + usr + "@" + SipStackAndroid.remoteIp;
+        String to = "sip:" + usr + "@" + SipStackSettings.remoteIp;
         new SipSendMessage().execute(to, text);
     }
 

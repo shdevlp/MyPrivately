@@ -36,7 +36,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import ru.bitprofi.myprivately.Utils;
 import ru.bitprofi.myprivately.iface.ISipEventListener;
 
 /**
@@ -54,60 +53,28 @@ public class SipStackAndroid implements SipListener {
     public static SipFactory     sipFactory;
     public static ListeningPoint udpListeningPoint;
 
-    public static String sipUserName;
-    public static String sipPassword;
-
-    public static String localIp;
-    public static String remoteIp   = "188.40.152.149";
-    public static int    localPort  = 5080;
-    public static int    remotePort = 5060;
-    public static String transport  = "udp";
-    public static String registeringAcc = "188_40_152_149";
-    public static String localEndpoint  = localIp + ":" + localPort;
-    public static String remoteEndpoint = remoteIp + ":" + remotePort;
-
     private Dialog m_dialog;
-    private ArrayList<ISipEventListener> m_sip_event_listener_list =
-            new ArrayList<ISipEventListener>();
+    private ArrayList<ISipEventListener> m_sip_event_listener_list = new ArrayList<ISipEventListener>();
 
-
-    /**
-     * Защищенный констуктор
-     */
     protected SipStackAndroid() {
         initialize();
     }
 
-    /**
-     * Держатель статической переменной
-     */
-    private static class SingletonHolder {
-        public static final SipStackAndroid
-                HOLDER_INSTANCE = new SipStackAndroid();
-    }
-
-    /**
-     * Единственный экземпляр класса
-     * @return
-     */
     public static SipStackAndroid getInstance() {
-        return SingletonHolder.HOLDER_INSTANCE;
+        if (instance == null) {
+            instance = new SipStackAndroid();
+        }
+        return instance;
     }
 
-    /**
-     * Инициализация
-     */
-    private static void initialize() {
-        localIp = Utils.getIPAddress(true);
-        localEndpoint = localIp + ":" + localPort;
-        remoteEndpoint = remoteIp + ":" + remotePort;
+    private void initialize() {
         sipStack = null;
         sipFactory = SipFactory.getInstance();
         sipFactory.setPathName("android.gov.nist");
 
         Properties properties = new Properties();
-        properties.setProperty("android.javax.sip.OUTBOUND_PROXY", remoteEndpoint + "/"
-                + transport);
+        properties.setProperty("javaxx.sip.OUTBOUND_PROXY",
+                SipStackSettings.remoteEndpoint + "/" + SipStackSettings.transport);
         properties.setProperty("android.javax.sip.STACK_NAME", "androidSip");
 
         try {
@@ -118,15 +85,16 @@ public class SipStackAndroid implements SipListener {
             System.err.println(e.getMessage());
             System.exit(0);
         }
+
         try {
             headerFactory = sipFactory.createHeaderFactory();
             addressFactory = sipFactory.createAddressFactory();
             messageFactory = sipFactory.createMessageFactory();
 
-            udpListeningPoint = sipStack.createListeningPoint(localIp,
-                    localPort, transport);
+            udpListeningPoint = sipStack.createListeningPoint(SipStackSettings.localIp,
+                    SipStackSettings.localPort, SipStackSettings.transport);
             sipProvider = sipStack.createSipProvider(udpListeningPoint);
-            sipProvider.addSipListener(SipStackAndroid.getInstance());
+            sipProvider.addSipListener(this);
         } catch (PeerUnavailableException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -138,17 +106,13 @@ public class SipStackAndroid implements SipListener {
         }
     }
 
-    /**
-     *
-     * @return
-     */
     public static ArrayList<ViaHeader> createViaHeader() {
         ArrayList<ViaHeader> viaHeaders = new ArrayList<ViaHeader>();
         ViaHeader myViaHeader;
         try {
             SipStackAndroid.getInstance();
-            myViaHeader = SipStackAndroid.headerFactory.createViaHeader(SipStackAndroid.localIp,
-                    SipStackAndroid.localPort, SipStackAndroid.transport, null);
+            myViaHeader = SipStackAndroid.headerFactory.createViaHeader(SipStackSettings.localIp,
+                    SipStackSettings.localPort, SipStackSettings.transport, null);
             myViaHeader.setRPort();
             viaHeaders.add(myViaHeader);
         } catch (ParseException e) {
@@ -161,6 +125,26 @@ public class SipStackAndroid implements SipListener {
 
     @Override
     public void processResponse(ResponseEvent arg0) {
+        Response response = (Response) arg0.getResponse();
+        ClientTransaction tid = arg0.getClientTransaction();
+        System.out.println(response.getStatusCode());
+        if (response.getStatusCode() == Response.PROXY_AUTHENTICATION_REQUIRED
+                || response.getStatusCode() == Response.UNAUTHORIZED) {
+            AuthenticationHelper authenticationHelper = ((SipStackExt) sipStack)
+                    .getAuthenticationHelper(new AccountManagerImpl(),
+                            headerFactory);
+            try {
+                ClientTransaction inviteTid = authenticationHelper
+                        .handleChallenge(response, tid, sipProvider, 5);
+                inviteTid.sendRequest();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (SipException e) {
+                e.printStackTrace();
+            }
+        }
+
+            /*
         Response response = (Response) arg0.getResponse();
         Dialog responseDialog = null;
 
@@ -223,27 +207,26 @@ public class SipStackAndroid implements SipListener {
                     }
                 }
             }
+*/
 
-        }
     }
 
     @Override
-    public void processRequest(RequestEvent arg0) {
-        Request request = (Request) arg0.getRequest();
-        ServerTransaction serverTransactionId = arg0
+    public void processRequest(RequestEvent var1) {
+         Request request = (Request) var1.getRequest();
+        ServerTransaction serverTransactionId = var1
                 .getServerTransaction();
         SIPMessage sp = (SIPMessage)request;
         System.out.println(request.getMethod());
 
         if(request.getMethod().equals("MESSAGE")){
-            sendOk(arg0);
+            sendOk(var1);
             try {
                 String message = sp.getMessageContent();
                 dispatchSipEvent(new SipEvent(this, SipEvent.SipEventType.MESSAGE,
                         message, sp.getFrom().getAddress().toString()));
 
             } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -349,7 +332,8 @@ public class SipStackAndroid implements SipListener {
 
     @Override
     public void processTransactionTerminated(TransactionTerminatedEvent event) {
-        System.out.println("TransactionTerminatedEvent:" + event.toString());
+        String message = event.toString();
+        System.out.println("TransactionTerminatedEvent:" + message);
     }
 
     @Override

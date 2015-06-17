@@ -38,17 +38,17 @@ public class SipRegister extends AsyncTask<Void, Void, Void> {
 
             // Create addresses and via header for the request
             Address fromAddress = addressFactory.createAddress("sip:"
-                    + SipStackAndroid.sipUserName + "@" + SipStackAndroid.remoteIp);
-            fromAddress.setDisplayName(SipStackAndroid.sipUserName);
+                    + SipStackSettings.userName + "@" + SipStackSettings.remoteIp);
+            fromAddress.setDisplayName(SipStackSettings.userName);
 
             Address toAddress = addressFactory.createAddress("sip:"
-                    + SipStackAndroid.sipUserName + "@" + SipStackAndroid.remoteIp);
-            toAddress.setDisplayName(SipStackAndroid.sipUserName);
+                    + SipStackSettings.userName + "@" + SipStackSettings.remoteIp);
+            toAddress.setDisplayName(SipStackSettings.userName);
 
             Address contactAddress = createContactAddress();
             ArrayList<ViaHeader> viaHeaders = SipStackAndroid.createViaHeader();
             URI requestURI = addressFactory.createAddress(
-                    "sip:" + SipStackAndroid.remoteEndpoint).getURI();
+                    "sip:" + SipStackSettings.remoteEndpoint).getURI();
 
             // Build the request
             final Request request = messageFactory.createRequest(requestURI,
@@ -81,9 +81,9 @@ public class SipRegister extends AsyncTask<Void, Void, Void> {
     private Address createContactAddress() {
         try {
             SipStackAndroid.getInstance();
-            return SipStackAndroid.addressFactory.createAddress("sip:" + SipStackAndroid.sipUserName + "@"
-                    + SipStackAndroid.localEndpoint + ";transport=udp"
-                    + ";registering_acc="+SipStackAndroid.registeringAcc);
+            return SipStackAndroid.addressFactory.createAddress("sip:"+ SipStackSettings.userName
+                    + "@" + SipStackSettings.localEndpoint + ";transport=udp"
+                    + ";registering_acc=" + SipStackSettings.registeringAcc);
         } catch (ParseException e) {
             return null;
         }

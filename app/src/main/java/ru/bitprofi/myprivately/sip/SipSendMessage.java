@@ -29,8 +29,8 @@ public class SipSendMessage extends AsyncTask<Object, Object, Object> {
             InvalidArgumentException, SipException {
 
         SipStackAndroid.getInstance();
-        SipURI from = SipStackAndroid.addressFactory.createSipURI(SipStackAndroid.sipUserName,
-                SipStackAndroid.localEndpoint);
+        SipURI from = SipStackAndroid.addressFactory.createSipURI(SipStackSettings.userName,
+                SipStackSettings.localEndpoint);
 
         SipStackAndroid.getInstance();
         Address fromNameAddress = SipStackAndroid.addressFactory.createAddress(from);
@@ -76,10 +76,10 @@ public class SipSendMessage extends AsyncTask<Object, Object, Object> {
 
         SipStackAndroid.getInstance();
         SipURI routeUri = SipStackAndroid.addressFactory.createSipURI(null,
-                SipStackAndroid.remoteIp);
-        routeUri.setTransportParam(SipStackAndroid.transport);
+                SipStackSettings.remoteIp);
+        routeUri.setTransportParam(SipStackSettings.transport);
         routeUri.setLrParam();
-        routeUri.setPort(SipStackAndroid.remotePort);
+        routeUri.setPort(SipStackSettings.remotePort);
 
         SipStackAndroid.getInstance();
         Address routeAddress = SipStackAndroid.addressFactory.createAddress(routeUri);
